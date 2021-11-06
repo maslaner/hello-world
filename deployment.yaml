@@ -23,17 +23,10 @@ spec:
     spec:
      containers:
       - name: sample-nodejs
-        image: 172.23.24.17:5000/sample-nodejs:latest
+        image: 192.168.66.152:5000/sample-nodejs:latest
         imagePullPolicy: Always
-        resources:
-          requests:
-            memory: "1Gi"
-            cpu: "1"
-          limits:
-            memory: "2Gi"
-            cpu: "2"
         ports:
-        - containerPort: 5000
+        - containerPort: 3000
           protocol: TCP
 ---
 apiVersion: v1
@@ -48,7 +41,7 @@ spec:
   - protocol: TCP
     name: http
     port: 80
-    targetPort: 5000
+    targetPort: 3000
   type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1beta1
