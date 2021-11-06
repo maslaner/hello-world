@@ -24,7 +24,6 @@ spec:
      containers:
       - name: sample-nodejs
         image: 192.168.66.152:5000/sample-nodejs:latest
-        imagePullPolicy: Always
         ports:
         - containerPort: 3000
           protocol: TCP
