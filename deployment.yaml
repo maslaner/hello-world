@@ -21,14 +21,7 @@ spec:
         app: sample-nodejs
         version: "1"
     spec:
-      imagePullSecrets:
-      - name: ipsosregistry
-      tolerations:
-      - key: "cattle.io/os"
-        operator: "Equal"
-        effect: "NoSchedule"
-        value: "linux"
-      containers:
+     containers:
       - name: sample-nodejs
         image: 172.23.24.17:5000/sample-nodejs:latest
         imagePullPolicy: Always
