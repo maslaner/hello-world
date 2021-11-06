@@ -1,0 +1,79 @@
+--- 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-nodejs
+  namespace: sample-nodejs
+spec:
+  selector:
+    matchLabels:
+      app: sample-nodejs
+      version: "1"
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sample-nodejs
+        version: "1"
+    spec:
+      imagePullSecrets:
+      - name: ipsosregistry
+      tolerations:
+      - key: "cattle.io/os"
+        operator: "Equal"
+        effect: "NoSchedule"
+        value: "linux"
+      containers:
+      - name: sample-nodejs
+        image: 172.23.24.17:5000/sample-nodejs:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "1"
+          limits:
+            memory: "2Gi"
+            cpu: "2"
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-nodejs-svc
+  namespace: sample-nodejs
+spec:
+  selector:
+    app: sample-nodejs
+  ports:
+  - protocol: TCP
+    name: http
+    port: 80
+    targetPort: 5000
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: sample-nodejs-virtualhost
+  namespace: sample-nodejs
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  tls:
+  rules:
+  - host: sample-nodejs.aslaner.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: sample-nodejs-svc
+          servicePort: 80
