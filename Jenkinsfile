@@ -18,7 +18,7 @@ pipeline {
 	stage("Push image") {
 		steps {
 			script {
-					docker.withRegistry('http://192.168.66.152:5000', 'localregistry') {
+					docker.withRegistry('http://192.168.66.152:5000') {
 					myapp.push("latest")
 					myapp.push("${env.BUILD_ID}")
 				}
