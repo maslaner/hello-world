@@ -9,7 +9,7 @@ spec:
     matchLabels:
       app: sample-nodejs
       version: "1"
-  replicas: 3
+  replicas: 2
   strategy:
     rollingUpdate:
       maxSurge: 100%
@@ -23,7 +23,7 @@ spec:
     spec:
      containers:
       - name: sample-nodejs
-        image: 192.168.66.152:5000/sample-nodejs:latest
+        image: 
         ports:
         - containerPort: 3000
           protocol: TCP
@@ -39,7 +39,7 @@ spec:
   ports:
   - protocol: TCP
     name: http
-    port: 80
+    port: 81
     targetPort: 3000
   type: ClusterIP
 ---
@@ -53,10 +53,10 @@ metadata:
 spec:
   tls:
   rules:
-  - host: sample-nodejs.192.168.66.151.sslip.io
+  - host: sample-nodejs.192.166.174.110.sslip.io
     http:
       paths:
       - path: /
         backend:
           serviceName: sample-nodejs-svc
-          servicePort: 80
+          servicePort: 81
