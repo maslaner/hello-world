@@ -9,7 +9,7 @@ spec:
     matchLabels:
       app: sample-nodejs
       version: "1"
-  replicas: 1
+  replicas: 3
   strategy:
     rollingUpdate:
       maxSurge: 100%
